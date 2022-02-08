@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import clayful from "clayful/client-js";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import React, { useState, useContext } from "react";
 
 export default function LoginPage () {
   const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
+  
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -36,6 +39,7 @@ export default function LoginPage () {
 
       localStorage.setItem("customerUid", data.customer);
       localStorage.setItem("accessToken", data.token);
+      isAuthenticated();
       navigate("/");
     });
   }

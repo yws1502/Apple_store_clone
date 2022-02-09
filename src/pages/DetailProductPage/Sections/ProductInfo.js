@@ -3,7 +3,15 @@ import "./ProductInfo.css";
 
 export default function ProductInfo ({ detail }) {
   const [ count, setCount ] = useState(1);
-
+  
+  const handleQuantityClick = (type) => {
+    if (type === "plus") {
+      setCount((prev) => prev + 1);
+    } else {
+      if (count === 0) return;
+      setCount((prev) => prev - 1);
+    }
+  }
 
   if (!detail) return;
   return (
@@ -15,9 +23,9 @@ export default function ProductInfo ({ detail }) {
       </h5>
       <div className="quantity">
         <p style={ { fontWeight: 600, marginBottom: 5 } }>수량</p>
-        <button className="plus-btn" type="button" name="button">+</button>
+        <button onClick={() => handleQuantityClick("plus")} className="plus-btn" type="button" name="button">+</button>
         <input type="text" readOnly name="number" value={count} />
-        <button className="minus-btn" type="button" name="button">-</button>
+        <button onClick={() => handleQuantityClick("minus")} className="minus-btn" type="button" name="button">-</button>
         <br />
         <h3>총 상품 금액 : { detail.price?.original.raw * count }원</h3>
         <br />

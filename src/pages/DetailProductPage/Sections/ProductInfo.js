@@ -43,11 +43,17 @@ export default function ProductInfo ({ detail }) {
         console.log(err.code);
         return;
       }
-      console.log(result.data)
-      setShow(true);
-      setTimeout(() => {
-        setShow(false);
-      }, 3000);
+      
+      if (type === "cart") {
+        setShow(true);
+        setTimeout(() => {
+          setShow(false);
+        }, 3000);
+      } else {
+        setTimeout(() => {
+          navigate("/user/cart");
+        }, 1000);
+      }
     });
   };
 
@@ -75,7 +81,7 @@ export default function ProductInfo ({ detail }) {
         <br />
 
         <div onClick={() => handleActionClick("cart")} className="product-info-action">장바구니에 담기</div>
-        <div onClick={() => handleActionClick()} className="product-info-action">바로 구매</div>
+        <div onClick={() => handleActionClick("pay")} className="product-info-action">바로 구매</div>
       </div>
     </div>
   )

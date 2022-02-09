@@ -1,4 +1,5 @@
-import React from "react";
+import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import clayful from "clayful/client-js";
 import "./LandingPage.css";
 
@@ -9,28 +10,42 @@ import arcade from "../../images/icons/arcade.png";
 
 function LandingPage () {
   const Product = clayful.Product;
+  const [ items, setItems ] = useState([]);
 
-  const options = {
-    query: {
-      page: 1
-    }
-  };
+  useEffect(() => {
+    const options = {
+      query: {
+        page: 1
+      }
+    };
+  
+    Product.list(options, function (err, res) {
+      if (err) {
+        console.log(err.code);
+        console.log(err.message);
+        return;
+      }
+      
+      setItems(res.data);
+    });
+  }, []);
 
-  Product.list(options, function (err, res) {
-    if (err) {
-      console.log(err.isClayful);
-      console.log(err.model);
-      console.log(err.method);
-      console.log(err.status);
-      console.log(err.headers);
-      console.log(err.code);
-      console.log(err.message);
+  const renderCards = items.map((item) => {
+    if (item) {
+      return (
+        <div key={item._id} className="grid-product">
+          <Link to={ `/product/${ item._id }` }>
+            <img src={ item.thumbnail.url } alt={ item.name } />
+            <div className="grid-detail">
+              <p>{ item.name }</p>
+              <p> From { item.price.original.formatted }</p>
+            </div>
+          </Link>
+        </div>
+      )
     }
-    
-    console.log(res.status);
-    console.log(res.headers);
-    console.log(res.data);
-  })
+  });
+
 
   return (
     <div>
@@ -41,7 +56,7 @@ function LandingPage () {
       <section className="product-grid">
         <div className="grid-container">
           <h2>Product</h2>
-          {/* <div className="grid">renderCards</div> */}
+          <div className="grid">{renderCards}</div>
         </div>
       </section>
 

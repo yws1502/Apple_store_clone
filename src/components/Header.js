@@ -37,7 +37,7 @@ export default function Header () {
                 </>
               )}
 
-              <Nav.Link href="/user/card">
+              <Nav.Link href="/user/cart">
                 <img src={cart} alt="cart" />
               </Nav.Link>
             </Nav>

@@ -10,8 +10,7 @@ import axios from 'axios';
 import "./css/auth.css";
 
 clayful.config({
-  client:
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjQzOTAwZTRhMzViNDg0MTA5MjdhYWM2ZDFmNjA1NWIzNzkyYWUzYjU1YzFhMTc2NjE3Yjk1MTYzYjhiY2Q4YmUiLCJyb2xlIjoiY2xpZW50IiwiaWF0IjoxNjQ0MzA0MDY3LCJzdG9yZSI6IlM3RUxaNFE5RTlMVy5CUEs2OExYREpaVFYiLCJzdWIiOiI1NEdaM1ZYSjZFVEoifQ.eraf9O-Ox5M7fAkDkxbGEaI_7lcaUTRKhu4SQxaRJA8",
+  client: process.env.REACT_APP_API_KEY,
 });
 
 clayful.install("request", require("clayful/plugins/request-axios")(axios));

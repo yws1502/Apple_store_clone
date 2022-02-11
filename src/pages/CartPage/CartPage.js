@@ -7,13 +7,12 @@ import CartItem from "./Sections/CartItem";
 export default function CartPage () {
   const [ cart, setCart ] = useState([]);
   const navigate = useNavigate();
+  const Cart = clayful.Cart;
+  const options = {
+    customer: localStorage.getItem("accessToken"),
+  };
 
   useEffect(() => {
-    const Cart = clayful.Cart;
-    const options = {
-      customer: localStorage.getItem("accessToken"),
-    };
-
     Cart.getForMe({}, options, (err, result) => {
       if (err) {
         console.log(err.code);
@@ -25,8 +24,39 @@ export default function CartPage () {
     });
   }, []);
 
+  const updateItemData = (itemId, quantity) => {
+    const payload = {
+      quantity
+    };
+
+    Cart.updateItemForMe(itemId, payload, options, (err, result) => {
+      if (err) {
+        console.log(err.code);
+        return;
+      }
+    })
+
+  }
+
+  const buttonHandler = (type, index) => {
+    const newCart = { ...cart };
+    const price = cart.items[index].price.original.raw / cart.items[index].quantity.raw;
+
+    if (type === "plus") {
+      newCart.items[index].price.original.raw += price;
+      newCart.total.amount.raw += price;
+      newCart.items[ index ].quantity.raw += 1;
+    } else {
+      if (newCart.items[ index ].quantity.raw === 1) return;
+      newCart.items[index].price.original.raw -= price;;
+      newCart.total.amount.raw -= price;
+      newCart.items[ index ].quantity.raw -= 1;
+    }
+    updateItemData(newCart.items[index]._id, newCart.items[index].quantity.raw);
+    setCart(newCart)
+  }
+
   const items = cart.items;
-  console.log(items)
   return (
     <div className="pageWrapper">
       <div className="shopping-cart">
@@ -38,6 +68,7 @@ export default function CartPage () {
                 key={ item._id }
                 item={ item }
                 index={ index }
+                buttonHandler={(type, index) => buttonHandler(type, index)}
               />
             })
           ): (

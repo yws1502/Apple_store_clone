@@ -1,7 +1,7 @@
 import React from "react";
 import "./CartItem.css";
 
-export default function CartItem ({ item, index }) {
+export default function CartItem ({ item, index, buttonHandler }) {
   if (!item.product) return null;
   return (
     <div className="item">
@@ -16,11 +16,21 @@ export default function CartItem ({ item, index }) {
       </div>
 
       <div className="quantity">
-        <button className="plus-btn" type="button" name="button">
+        <button 
+          onClick={() => buttonHandler("plus", index)}
+          className="plus-btn"
+          type="button"
+          name="button"
+        >
           +
         </button>
         <input type="text" readOnly name="name" value={item.quantity.raw} />
-        <button className="minus-btn" type="button" name="button">
+        <button 
+          onClick={() => buttonHandler("minus", index)}
+          className="minus-btn"
+          type="button"
+          name="button"
+        >
           -
         </button>
       </div>
